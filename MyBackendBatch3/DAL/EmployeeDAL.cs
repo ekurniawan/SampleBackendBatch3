@@ -25,26 +25,37 @@ namespace MyBackendBatch3.DAL
                 SqlCommand cmd = new SqlCommand(strSql, conn);
 
                 conn.Open();
-                SqlDataReader dr = cmd.ExecuteReader();
-                if (dr.HasRows)
+                try
                 {
-                    while (dr.Read())
+                    SqlDataReader dr = cmd.ExecuteReader();
+                    if (dr.HasRows)
                     {
-                        lstEmployee.Add(new Employee
+                        while (dr.Read())
                         {
-                            EmpId = Convert.ToInt32(dr["EmpId"]),
-                            EmpName = dr["EmpName"].ToString(),
-                            Designation = dr["Designation"].ToString(),
-                            Department = dr["Department"].ToString(),
-                            Qualification = dr["Qualification"].ToString()
-                        });
+                            lstEmployee.Add(new Employee
+                            {
+                                EmpId = Convert.ToInt32(dr["EmpId"]),
+                                EmpName = dr["EmpName"].ToString(),
+                                Designation = dr["Designation"].ToString(),
+                                Department = dr["Department"].ToString(),
+                                Qualification = dr["Qualification"].ToString()
+                            });
+                        }
                     }
+                    dr.Close();
+                    return lstEmployee;
                 }
-                dr.Close();
-                cmd.Dispose();
-                conn.Close();
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+                finally
+                {
+                    
+                    cmd.Dispose();
+                    conn.Close();
+                }
             }
-            return lstEmployee;
         }
     }
 }
