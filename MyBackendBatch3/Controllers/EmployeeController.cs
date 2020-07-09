@@ -60,8 +60,17 @@ namespace MyBackendBatch3.Controllers
         }
 
         // DELETE: api/Employee/5
-        public void Delete(int id)
+        public IHttpActionResult Delete(int id)
         {
+            try
+            {
+                _empDAL.Delete(id);
+                return Ok("Data berhasil didelete");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

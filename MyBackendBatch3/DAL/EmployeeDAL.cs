@@ -116,5 +116,24 @@ namespace MyBackendBatch3.DAL
                 }
             }
         }
+
+        public void Delete(int EmpId)
+        {
+            using (SqlConnection conn = new SqlConnection(GetConnStr()))
+            {
+                string strSql = @"delete from Employees where EmpId=@EmpId";
+                SqlCommand cmd = new SqlCommand(strSql, conn);
+                cmd.Parameters.AddWithValue("@EmpId", EmpId);
+                try
+                {
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+                catch (SqlException sqlEx)
+                {
+                    throw new Exception(sqlEx.Message);
+                }
+            }
+        }
     }
 }
