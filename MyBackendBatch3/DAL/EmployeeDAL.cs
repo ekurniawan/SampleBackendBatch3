@@ -86,5 +86,35 @@ namespace MyBackendBatch3.DAL
                 }
             }
         }
+
+        public void Update(Employee emp)
+        {
+            using (SqlConnection conn = new SqlConnection(GetConnStr()))
+            {
+                string strSql = @"update Employees set EmpName=@EmpName,Designation=@Designation,
+                Department=@Department,Qualification=@Qualification where EmpId=@EmpId";
+                SqlCommand cmd = new SqlCommand(strSql, conn);
+                cmd.Parameters.AddWithValue("@EmpName", emp.EmpName);
+                cmd.Parameters.AddWithValue("@Designation", emp.Designation);
+                cmd.Parameters.AddWithValue("@Department", emp.Department);
+                cmd.Parameters.AddWithValue("@Qualification", emp.Qualification);
+                cmd.Parameters.AddWithValue("@EmpId", emp.EmpId);
+
+                try
+                {
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+                catch (SqlException sqlEx)
+                {
+                    throw new Exception($"Error:{sqlEx.Message}");
+                }
+                finally
+                {
+                    cmd.Dispose();
+                    conn.Close();
+                }
+            }
+        }
     }
 }

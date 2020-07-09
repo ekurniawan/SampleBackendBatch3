@@ -46,8 +46,17 @@ namespace MyBackendBatch3.Controllers
         }
 
         // PUT: api/Employee/5
-        public void Put(int id, [FromBody]string value)
+        public IHttpActionResult Put(Employee emp)
         {
+            try
+            {
+                _empDAL.Update(emp);
+                return Ok($"Data Emp {emp.EmpName} berhasil diupdate");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // DELETE: api/Employee/5
