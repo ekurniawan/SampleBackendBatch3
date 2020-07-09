@@ -57,5 +57,33 @@ namespace MyBackendBatch3.DAL
                 }
             }
         }
+
+        public void Insert(Employee emp)
+        {
+            using (SqlConnection conn = new SqlConnection(GetConnStr()))
+            {
+                string strSql = @"insert into Employees(EmpName,Designation,Department,Qualification) 
+                values(@EmpName,@Designation,@Department,@Qualification)";
+                SqlCommand cmd = new SqlCommand(strSql, conn);
+                cmd.Parameters.AddWithValue("@EmpName", emp.EmpName);
+                cmd.Parameters.AddWithValue("@Designation", emp.Designation);
+                cmd.Parameters.AddWithValue("@Department", emp.Department);
+                cmd.Parameters.AddWithValue("@Qualification", emp.Qualification);
+                try
+                {
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+                catch (SqlException sqlEx)
+                {
+                    throw new Exception($"Error:{sqlEx.Message}");
+                }
+                finally
+                {
+                    cmd.Dispose();
+                    conn.Close();
+                }
+            }
+        }
     }
 }
