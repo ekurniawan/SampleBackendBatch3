@@ -69,6 +69,7 @@ namespace MyBackendBatch3.DAL
                 cmd.Parameters.AddWithValue("@Designation", emp.Designation);
                 cmd.Parameters.AddWithValue("@Department", emp.Department);
                 cmd.Parameters.AddWithValue("@Qualification", emp.Qualification);
+
                 try
                 {
                     conn.Open();
